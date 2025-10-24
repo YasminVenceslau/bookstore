@@ -1,16 +1,16 @@
 import os
 from pathlib import Path
 
+# ======================
+# 🔹 Base do projeto
+# ======================
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # ======================
 # 🔐 Segurança e Debug
 # ======================
 SECRET_KEY = os.environ.get("SECRET_KEY", "unsafe-secret-key")
-
 DEBUG = int(os.environ.get("DEBUG", default=0))
-
-# 'DJANGO_ALLOWED_HOSTS' deve ser uma string com espaços
 ALLOWED_HOSTS = ['BlackRosesS2.pythonanywhere.com', 'localhost', '127.0.0.1']
 
 # ======================
@@ -31,9 +31,12 @@ INSTALLED_APPS = [
     "rest_framework.authtoken",
 ]
 
+# ======================
+# 🛡 Middleware
+# ======================
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
-    "whitenoise.middleware.WhiteNoiseMiddleware",  # WhiteNoise aqui
+    "whitenoise.middleware.WhiteNoiseMiddleware",  # WhiteNoise deve vir após SecurityMiddleware
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -45,10 +48,13 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = "bookstore.urls"
 
+# ======================
+# 📝 Templates
+# ======================
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [os.path.join(BASE_DIR, 'bookstore', 'templates')],
+        "DIRS": [os.path.join(BASE_DIR, "bookstore", "templates")],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -63,22 +69,18 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "bookstore.wsgi.application"
 
-STATIC_ROOT = BASE_DIR / 'staticfiles'
-
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
 # ======================
-# 💾 Banco de dados
+# 💾 Banco de dados (SQLite absoluto)
 # ======================
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": "/home/BlackRosesS2/bookstore/db.sqlite3",  
+        "NAME": "/home/BlackRosesS2/bookstore/db.sqlite3",  # caminho absoluto para PythonAnywhere
     }
 }
 
 # ======================
-# 🔑 Autenticação
+# 🔑 Validação de senhas
 # ======================
 AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
@@ -100,8 +102,8 @@ USE_TZ = True
 # 📦 Arquivos estáticos
 # ======================
 STATIC_URL = "/static/"
-
-DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+STATIC_ROOT = BASE_DIR / "staticfiles"
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 # ======================
 # ⚙️ DRF Config
@@ -120,3 +122,8 @@ REST_FRAMEWORK = {
 # 🧠 Debug Toolbar
 # ======================
 INTERNAL_IPS = ["127.0.0.1"]
+
+# ======================
+# 🔧 Outras configurações
+# ======================
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
