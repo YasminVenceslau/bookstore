@@ -1,0 +1,31 @@
+version: "3.9"
+
+services:
+  # 🖥️ Serviço da aplicação Django
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/app  # sincroniza código local com container
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./env.dev  # carrega variáveis de ambiente
+    depends_on:
+      - db
+
+  # 🗄️ Banco de dados PostgreSQL
+  db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: bookstore_dev
+      POSTGRES_PASSWORD: bookstore_dev
+      POSTGRES_DB: bookstore_dev_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    ports:
+      - "5432:5432"
+
+volumes:
+  postgres_data:
+  app_data:
