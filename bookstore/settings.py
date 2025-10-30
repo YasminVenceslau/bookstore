@@ -72,12 +72,22 @@ WSGI_APPLICATION = "bookstore.wsgi.application"
 # ======================
 # 💾 Banco de dados (SQLite absoluto)
 # ======================
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": "/home/BlackRosesS2/bookstore/db.sqlite3",  # caminho absoluto para PythonAnywhere
+if "PYTHONANYWHERE_DOMAIN" in os.environ:
+    # 🌐 Ambiente de produção (PythonAnywhere)
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": "/home/BlackRosesS2/bookstore/db.sqlite3",
+        }
     }
-}
+else:
+    # 💻 Ambiente local (seu computador)
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
+    }
 
 # ======================
 # 🔑 Validação de senhas
